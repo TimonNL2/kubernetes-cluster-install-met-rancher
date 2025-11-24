@@ -129,6 +129,8 @@ sudo kubeadm init \
 
 Bewaar het join commando uit de output.
 
+![voorbeeld stap 6](images/Screenshot From 2025-11-24 11-26-13.png)
+
 ## Stap 7: Configureer kubectl op Primary Master
 
 ```bash
