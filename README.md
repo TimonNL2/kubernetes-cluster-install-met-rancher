@@ -300,7 +300,8 @@ kubectl get svc -n cattle-system
 ### Stap 5: cert-manager Installeren
 
 ```bash
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/<VERSION>/cert-manager.crds.yaml
+# Installeer cert-manager CRDs (versie v1.13.0 of nieuwer)
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.crds.yaml
 
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
@@ -311,7 +312,7 @@ helm install cert-manager jetstack/cert-manager \
   --set crds.enabled=true
 ```
 
-**Let op**: Vervang `<VERSION>` met de gewenste cert-manager versie (bijv. v1.13.0).
+**Let op**: Je kunt de versie aanpassen naar een nieuwere versie door `v1.13.0` te vervangen met de gewenste versie (bijv. `v1.14.0`). Controleer de [cert-manager releases](https://github.com/cert-manager/cert-manager/releases) voor de nieuwste versie.
 
 ### Stap 6: Rancher Service naar NodePort Converteren
 
