@@ -1,13 +1,13 @@
 # kubernetes-cluster-install-met-rancher
-Loadbalancer:
-Install HAProxy
+#Loadbalancer:
+#Install HAProxy
 	sudo apt update && sudo apt install -y haproxy
 
-Configure HAProxy
-Edit the config:
+#Configure HAProxy
+#Edit the config:
 	sudo nano /etc/haproxy/haproxy.cfg
 
-Add:
+#Add:
 	frontend kubernetes-frontend
    	 bind <ip-loadBalancer>:6443
   	  mode tcp
@@ -22,11 +22,11 @@ Add:
 	    server master-2 <Ip-Master-2>6443 check
 	    server master-3 <Ip-Master-3>6443 check
 
-Restart and enable HAProxy:
+#Restart and enable HAProxy:
 	sudo systemctl restart haproxy
 	sudo systemctl enable haproxy
 
-Verify:
+#Verify:
 nc <ip-loadBalancer> -v
 
 
