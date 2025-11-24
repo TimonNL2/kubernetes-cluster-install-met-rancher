@@ -129,7 +129,7 @@ sudo kubeadm init \
 
 Bewaar het join commando uit de output.
 
-![voorbeeld stap 6](images/Screenshot From 2025-11-24 11-26-13.png)
+
 
 ## Stap 7: Configureer kubectl op Primary Master
 
@@ -259,25 +259,3 @@ kubectl get svc -n cattle-system
 ### Stap 7: Open Rancher in de Browser
 
 Ga in de browser naar: `https://<Primary-master-IP>:<NodePort>`
-
-## Screenshots toevoegen
-
-Om screenshots toe te voegen aan deze README:
-
-1. Maak een map aan voor afbeeldingen (bijv. `images/` of `screenshots/`)
-2. Plaats je screenshots in deze map
-3. Voeg ze toe aan de README met markdown syntax:
-
-```markdown
-![Beschrijving van screenshot](images/screenshot-naam.png)
-```
-
-Voorbeeld:
-
-```markdown
-### Rancher Dashboard
-
-![Rancher Dashboard](images/rancher-dashboard.png)
-
-Dit is het Rancher dashboard na succesvolle installatie.
-```
