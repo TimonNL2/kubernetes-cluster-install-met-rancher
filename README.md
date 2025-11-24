@@ -233,6 +233,8 @@ kubectl get svc -n cattle-system
 
 ### Stap 5: Installeer cert-manager
 
+**Opmerking:** Vervang `<VERSION>` hieronder met de gewenste versie (bijv. `v1.13.0`). Controleer de [releases pagina](https://github.com/cert-manager/cert-manager/releases) voor de nieuwste versie.
+
 ```bash
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/<VERSION>/cert-manager.crds.yaml
 
