@@ -1,5 +1,39 @@
 # Kubernetes Cluster Installatie met Rancher
 
+## Introductie
+
+Deze handleiding beschrijft stap voor stap hoe je een volledig functioneel Kubernetes cluster opzet met Rancher als management platform. Je leert hoe je een high-availability Kubernetes cluster bouwt met meerdere master nodes en worker nodes, waarbij HAProxy wordt gebruikt als load balancer voor de control plane.
+
+### Wat ga je maken?
+
+In deze guide bouw je een production-ready Kubernetes cluster met de volgende componenten:
+- Een HAProxy load balancer voor high availability
+- Een Kubernetes cluster met 3 master nodes (control plane)
+- 3 worker nodes voor het draaien van workloads
+- Calico als netwerk plugin
+- Rancher als cluster management interface
+
+### Wat is het resultaat?
+
+Na het doorlopen van deze handleiding heb je een volledig werkend Kubernetes cluster met:
+- High availability voor de control plane via meerdere master nodes
+- Load balancing via HAProxy
+- Een gebruiksvriendelijke webinterface via Rancher voor cluster management
+- Een schaalbare infrastructuur voor het draaien van containerized applicaties
+
+## Vereisten
+
+Voor deze installatie heb je de volgende infrastructuur nodig:
+
+- **7 Ubuntu servers** in totaal:
+  - 1 server voor de Load Balancer (HAProxy)
+  - 3 servers voor Master Nodes (Control Plane)
+  - 3 servers voor Worker Nodes
+- Minimaal 2 CPU cores en 4GB RAM per server (aanbevolen)
+- Ubuntu 20.04 LTS of hoger
+- Root of sudo toegang op alle servers
+- Netwerk connectiviteit tussen alle servers
+
 ## Loadbalancer
 
 ### Installeer HAProxy
@@ -204,20 +238,34 @@ ETCDCTL_API=3 etcdctl member list \
 - 3 Workers
 - Kubectl
 
-### Stap 1: Voeg de Rancher Helm Repository toe
+### Stap 1: Installeer Helm
+
+Installeer Helm op de primary master node:
+
+```bash
+sudo snap install helm --classic
+```
+
+Controleer de installatie:
+
+```bash
+helm version
+```
+
+### Stap 2: Voeg de Rancher Helm Repository toe
 
 ```bash
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 helm repo update
 ```
 
-### Stap 2: Maak de namespace voor Rancher aan
+### Stap 3: Maak de namespace voor Rancher aan
 
 ```bash
 kubectl create namespace cattle-system
 ```
 
-### Stap 3: Installeer Rancher
+### Stap 4: Installeer Rancher
 
 ```bash
 helm install rancher rancher-latest/rancher \
@@ -227,13 +275,13 @@ helm install rancher rancher-latest/rancher \
   --set bootstrapPassword=admin
 ```
 
-### Stap 4: Controleer Rancher Service
+### Stap 5: Controleer Rancher Service
 
 ```bash
 kubectl get svc -n cattle-system
 ```
 
-### Stap 5: Installeer cert-manager
+### Stap 6: Installeer cert-manager
 
 **Opmerking:** Vervang `<VERSION>` hieronder met de gewenste versie (bijv. `v1.13.0`). Controleer de [releases pagina](https://github.com/cert-manager/cert-manager/releases) voor de nieuwste versie.
 
@@ -249,13 +297,13 @@ helm install cert-manager jetstack/cert-manager \
   --set crds.enabled=true
 ```
 
-### Stap 6: Converteer Rancher Service naar NodePort
+### Stap 7: Converteer Rancher Service naar NodePort
 
 ```bash
 kubectl patch svc rancher -n cattle-system -p '{"spec": {"type": "NodePort"}}'
 kubectl get svc -n cattle-system
 ```
 
-### Stap 7: Open Rancher in de Browser
+### Stap 8: Open Rancher in de Browser
 
 Ga in de browser naar: `https://<Primary-master-IP>:<NodePort>`
