@@ -59,7 +59,11 @@ backend kubernetes-backend
     server master-3 <Ip-Master-3>:6443 check
 ```
 
-**Let op**: Vervang `<ip-loadBalancer>`, `<Ip-Master-1>`, `<Ip-Master-2>`, en `<Ip-Master-3>` met de daadwerkelijke IP-adressen.
+**Let op**: Vervang de placeholders met de daadwerkelijke IP-adressen:
+- `<ip-loadBalancer>`: Het IP-adres van je load balancer node (bijv. `192.168.1.10`)
+- `<Ip-Master-1>`: Het IP-adres van de eerste master node (bijv. `192.168.1.11`)
+- `<Ip-Master-2>`: Het IP-adres van de tweede master node (bijv. `192.168.1.12`)
+- `<Ip-Master-3>`: Het IP-adres van de derde master node (bijv. `192.168.1.13`)
 
 ### HAProxy Herstarten en Enablen
 
@@ -174,12 +178,12 @@ sudo systemctl enable kubelet
 
 ```bash
 sudo kubeadm init \
-  --control-plane-endpoint "<IP-Master-1>:6443" \
+  --control-plane-endpoint "<ip-loadBalancer>:6443" \
   --upload-certs \
   --pod-network-cidr=10.244.0.0/16
 ```
 
-**Let op**: Vervang `<IP-Master-1>` met het daadwerkelijke IP-adres van de primary master node.
+**Let op**: Vervang `<ip-loadBalancer>` met het IP-adres van je HAProxy load balancer (bijv. `192.168.1.10`). Dit zorgt ervoor dat alle nodes via de load balancer communiceren voor hoge beschikbaarheid.
 
 **Belangrijk**: Bewaar de join commands uit de output! Je hebt deze nodig voor stap 8.
 
@@ -202,7 +206,7 @@ Gebruik de output gegevens van stap 6.
 ### Masters Toevoegen
 
 ```bash
-kubeadm join <IP-Master-1>:6443 --token <token> \
+kubeadm join <ip-loadBalancer>:6443 --token <token> \
   --discovery-token-ca-cert-hash sha256:<hash> \
   --control-plane --certificate-key <cert-key>
 ```
@@ -210,11 +214,14 @@ kubeadm join <IP-Master-1>:6443 --token <token> \
 ### Workers Toevoegen
 
 ```bash
-kubeadm join <IP-Master-1>:6443 --token <token> \
+kubeadm join <ip-loadBalancer>:6443 --token <token> \
   --discovery-token-ca-cert-hash sha256:<hash>
 ```
 
-**Let op**: Vervang `<IP-Master-1>`, `<token>`, `<hash>`, en `<cert-key>` met de daadwerkelijke waarden uit de kubeadm init output.
+**Let op**: 
+- Vervang `<ip-loadBalancer>` met het IP-adres van je HAProxy load balancer (bijv. `192.168.1.10`)
+- Vervang `<token>`, `<hash>`, en `<cert-key>` met de daadwerkelijke waarden uit de kubeadm init output
+- Alle nodes joinen via de load balancer voor hoge beschikbaarheid
 
 ---
 
